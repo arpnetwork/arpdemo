@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="activity_horizontal_margin">27dp</dimen>
+    <dimen name="activity_top_margin">67dp</dimen>
+    <dimen name="list_vertical_margin">18dp</dimen>
+    <dimen name="item_vertical_margin">8dp</dimen>
+    <dimen name="icon_item_image_vertical_margin">5dp</dimen>
+    <dimen name="text_margin">12dp</dimen>
+    <dimen name="item_padding">17dp</dimen>
+
+    <dimen name="corner_radius">7dp</dimen>
+
+    <dimen name="icon_item_image_size">43dp</dimen>
+    <dimen name="poster_item_image_size">34dp</dimen>
+
+    <dimen name="title_text_size">22sp</dimen>
+    <dimen name="item_title_text_size">17sp</dimen>
+    <dimen name="item_subtitle_text_size">13sp</dimen>
+</resources>
