@@ -28,11 +28,12 @@
     <style name="ListView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:scrollbars">none</item>
         <item name="android:layout_marginTop">@dimen/list_vertical_margin</item>
         <item name="android:layout_marginBottom">@dimen/list_vertical_margin</item>
         <item name="android:layout_marginLeft">@dimen/activity_horizontal_margin</item>
         <item name="android:layout_marginRight">@dimen/activity_horizontal_margin</item>
+        <item name="android:divider"></item>
+        <item name="android:scrollbars">none</item>
     </style>
 
     <style name="ItemIconImageView">

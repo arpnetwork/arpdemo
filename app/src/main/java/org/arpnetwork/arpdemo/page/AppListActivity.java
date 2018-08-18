@@ -14,19 +14,26 @@
  * limitations under the License.
  */
 
-package org.arpnetwork.arpdemo;
+package org.arpnetwork.arpdemo.page;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import org.arpnetwork.arpclient.volley.GsonRequest;
-import org.arpnetwork.arpclient.volley.VolleySingleton;
+import org.arpnetwork.arpdemo.R;
+import org.arpnetwork.arpdemo.data.AppInfo;
+import org.arpnetwork.arpdemo.data.AppInfoResponse;
+import org.arpnetwork.arpdemo.data.DeviceInfo;
+import org.arpnetwork.arpdemo.protocol.ServerProtocol;
+import org.arpnetwork.arpdemo.volley.GsonRequest;
+import org.arpnetwork.arpdemo.volley.VolleySingleton;
 
 import java.util.List;
 
@@ -39,10 +46,28 @@ public class AppListActivity extends AppCompatActivity {
         getAppInfoList(this);
     }
 
-    private void initViews(List<AppInfo> list) {
+    private void initViews(final List<AppInfo> list) {
         ListView listView = findViewById(R.id.list_view);
         AppListAdapter adapter = new AppListAdapter(this, list);
         listView.setAdapter(adapter);
+        final Context context = this;
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                AppInfo appInfo = list.get(i);
+                ServerProtocol.getDeviceInfo(context, appInfo.packageName, new ServerProtocol.OnReceiveDeviceInfo() {
+                    @Override
+                    public void onReceiveDeviceInfo(DeviceInfo info) {
+                        // TODO: connect remote device
+                    }
+                }, new ServerProtocol.OnServerProtocolError() {
+                    @Override
+                    public void onServerProtocolError(int code, String msg) {
+                        // TODO: show error tips
+                    }
+                });
+            }
+        });
     }
 
     private void getAppInfoList(Context context) {

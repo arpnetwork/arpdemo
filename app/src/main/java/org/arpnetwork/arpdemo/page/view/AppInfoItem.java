@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.arpnetwork.arpdemo;
+package org.arpnetwork.arpdemo.page.view;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -23,6 +23,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
+
+import org.arpnetwork.arpdemo.data.AppInfo;
+import org.arpnetwork.arpdemo.R;
 
 public class AppInfoItem extends LinearLayout {
     public static final int POSTER = 0;

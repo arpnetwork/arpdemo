@@ -14,13 +14,16 @@
  * limitations under the License.
  */
 
-package org.arpnetwork.arpdemo;
+package org.arpnetwork.arpdemo.page;
 
 import android.content.Context;
 import android.database.DataSetObserver;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
+
+import org.arpnetwork.arpdemo.data.AppInfo;
+import org.arpnetwork.arpdemo.page.view.AppInfoItem;
 
 import java.util.List;
 
@@ -81,12 +84,12 @@ public class AppListAdapter implements ListAdapter {
 
     @Override
     public boolean areAllItemsEnabled() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled(int i) {
-        return false;
+        return true;
     }
 
     @Override

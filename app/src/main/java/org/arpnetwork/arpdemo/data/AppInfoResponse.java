@@ -14,11 +14,9 @@
  * limitations under the License.
  */
 
-package org.arpnetwork.arpdemo;
+package org.arpnetwork.arpdemo.data;
 
 import java.util.List;
 
-public class AppInfoResponse {
-    int code;
-    List<AppInfo> data;
+public class AppInfoResponse extends Response<List<AppInfo>> {
 }

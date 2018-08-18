@@ -6,6 +6,7 @@
     android:layout_marginTop="@dimen/item_vertical_margin"
     android:background="@drawable/round_corner_bg"
     android:elevation="3dp"
+    android:descendantFocusability="blocksDescendants"
     android:orientation="vertical">
 
     <FrameLayout

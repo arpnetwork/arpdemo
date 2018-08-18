@@ -14,15 +14,21 @@
  * limitations under the License.
  */
 
-package org.arpnetwork.arpdemo;
+package org.arpnetwork.arpdemo.data;
 
-public class AppInfo {
-    public static final String HOST = "http://dev.arpnetwork.org:8080";
+public class DeviceInfo {
+    public static final int STATE_NO_CONNECTION = 0;
+    public static final int STATE_CONNECTING = 1;
+    public static final int STATE_DISCONNECTED = 2;
+    public static final int STATE_CONNECT_FAIL = -1;
+    public static final int STATE_ILLEGAL_DISCONNECTION = -2;
 
-    public String title;
-    public String description;
-    public String poster;
-    public String logo;
-    public String packageName;
-    public int rating;
+    public String ip;
+    public int port;
+    public String session;
+
+    @Override
+    public String toString() {
+        return "DeviceInfo [ip=" + ip + ", port=" + port + ", session=" + session + "]";
+    }
 }
