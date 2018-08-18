@@ -21,6 +21,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,10 +34,15 @@ import org.arpnetwork.arpdemo.page.view.H264RawView;
 import org.arpnetwork.arpdemo.protocol.ServerProtocol;
 
 public class PlayActivity extends Activity implements H264RawView.OnRenderListener {
+    private static final int UPDATE_STATE_INTERVAL = 10000;
+
     private H264RawView mH264RawView;
     private ProgressBar mIndicatorView;
 
     private String mSession;
+
+    private boolean mClosed = false;
+    private Handler mUpdateConnectingStateHandler = new Handler();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,22 +56,24 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
     @Override
     public void onBackPressed() {
         mH264RawView.stop();
+        setDisconnectedState();
         super.onBackPressed();
     }
 
     @Override
     public void onPrepared() {
         mIndicatorView.setVisibility(View.GONE);
-        ServerProtocol.setConnectionState(this, mSession, DeviceInfo.STATE_CONNECTING);
+        updateConnectingState();
     }
 
     @Override
     public void onClosed() {
-        ServerProtocol.setConnectionState(this, mSession, DeviceInfo.STATE_DISCONNECTED);
+        setDisconnectedState();
     }
 
     @Override
     public void onError(int errorCode, String msg) {
+        setDisconnectedState();
         AlertDialog dialog = new AlertDialog.Builder(this).setMessage(msg)
                 .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
@@ -101,5 +109,22 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
         mIndicatorView.setLayoutParams(layoutParams);
 
         ((ViewGroup) mH264RawView.getParent()).addView(mIndicatorView);
+    }
+
+    private void updateConnectingState() {
+        ServerProtocol.setConnectionState(this, mSession, DeviceInfo.STATE_CONNECTING);
+        mUpdateConnectingStateHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateConnectingState();
+            }
+        }, UPDATE_STATE_INTERVAL);
+    }
+
+    private void setDisconnectedState() {
+        if (mClosed) return;
+        mUpdateConnectingStateHandler.removeCallbacksAndMessages(null);
+        ServerProtocol.setConnectionState(this, mSession, DeviceInfo.STATE_DISCONNECTED);
+        mClosed = true;
     }
 }

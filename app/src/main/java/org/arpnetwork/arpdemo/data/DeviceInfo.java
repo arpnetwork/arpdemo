@@ -17,11 +17,8 @@
 package org.arpnetwork.arpdemo.data;
 
 public class DeviceInfo {
-    public static final int STATE_NO_CONNECTION = 0;
     public static final int STATE_CONNECTING = 1;
     public static final int STATE_DISCONNECTED = 2;
-    public static final int STATE_CONNECT_FAIL = -1;
-    public static final int STATE_ILLEGAL_DISCONNECTION = -2;
 
     public String ip;
     public int port;
