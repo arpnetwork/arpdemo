@@ -17,8 +17,6 @@
 package org.arpnetwork.arpdemo.data;
 
 public class AppInfo {
-    public static final String HOST = "http://dev.arpnetwork.org:8080";
-
     public String title;
     public String description;
     public String poster;

@@ -17,11 +17,13 @@
 package org.arpnetwork.arpdemo.page;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -55,15 +57,22 @@ public class AppListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 AppInfo appInfo = list.get(i);
-                ServerProtocol.getDeviceInfo(context, appInfo.packageName, new ServerProtocol.OnReceiveDeviceInfo() {
+                final String packageName = appInfo.packageName;
+                ServerProtocol.getDeviceInfo(context, packageName, new ServerProtocol.OnReceiveDeviceInfo() {
                     @Override
                     public void onReceiveDeviceInfo(DeviceInfo info) {
-                        // TODO: connect remote device
+                        Intent intent = new Intent(AppListActivity.this, PlayActivity.class);
+                        intent.putExtra("HOST", info.ip);
+                        intent.putExtra("PORT", info.port);
+                        intent.putExtra("SESSION", info.session);
+                        intent.putExtra("PACKAGE", packageName);
+
+                        startActivity(intent);
                     }
                 }, new ServerProtocol.OnServerProtocolError() {
                     @Override
                     public void onServerProtocolError(int code, String msg) {
-                        // TODO: show error tips
+                        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -71,7 +80,7 @@ public class AppListActivity extends AppCompatActivity {
     }
 
     private void getAppInfoList(Context context) {
-        String url = AppInfo.HOST + "/app/list";
+        String url = ServerProtocol.HOST + "/app/list";
         GsonRequest request = new GsonRequest<AppInfoResponse>(Request.Method.GET, url, null,
                 AppInfoResponse.class, new Response.Listener<AppInfoResponse>() {
             @Override

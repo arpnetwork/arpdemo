@@ -31,7 +31,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class ServerProtocol {
-    private static final String HOST = "http://dev.arpnetwork.org:8080";
+    public static final String HOST = "http://dev.arpnetwork.org:8081";
 
     public interface OnReceiveDeviceInfo {
         /**

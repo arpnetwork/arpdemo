@@ -26,6 +26,7 @@ import com.squareup.picasso.Picasso;
 
 import org.arpnetwork.arpdemo.data.AppInfo;
 import org.arpnetwork.arpdemo.R;
+import org.arpnetwork.arpdemo.protocol.ServerProtocol;
 
 public class AppInfoItem extends LinearLayout {
     public static final int POSTER = 0;
@@ -42,6 +43,18 @@ public class AppInfoItem extends LinearLayout {
         setAppInfo(info, type);
     }
 
+    public void setAppInfo(AppInfo data, int type) {
+        initWithData(type);
+        if (mPosterIV != null) {
+            Picasso.get().load(ServerProtocol.HOST + data.poster).into(mPosterIV);
+        }
+        Picasso.get().load(ServerProtocol.HOST + data.logo).into(mIconIV);
+
+        mTitleTV.setText(data.title);
+        mDescriptionTV.setText(data.description);
+        setRating(data.rating);
+    }
+
     private void initWithData(int type) {
         if (type == ICON) {
             LayoutInflater.from(getContext()).inflate(R.layout.item_app_icon, this, true);
@@ -53,18 +66,6 @@ public class AppInfoItem extends LinearLayout {
         mTitleTV = findViewById(R.id.tv_title);
         mDescriptionTV = findViewById(R.id.tv_description);
         mRatingLL = findViewById(R.id.ll_rating);
-    }
-
-    public void setAppInfo(AppInfo data, int type) {
-        initWithData(type);
-        if (mPosterIV != null) {
-            Picasso.get().load(AppInfo.HOST + data.poster).into(mPosterIV);
-        }
-        Picasso.get().load(AppInfo.HOST + data.logo).into(mIconIV);
-
-        mTitleTV.setText(data.title);
-        mDescriptionTV.setText(data.description);
-        setRating(data.rating);
     }
 
     private void setRating(int rating) {
