@@ -111,7 +111,7 @@ public class ServerProtocol {
             params.put("state", state);
         } catch (JSONException ignore) {
         }
-        GsonRequest request = new GsonRequest<Void>(Request.Method.PATCH, url, params.toString(),
+        GsonRequest request = new GsonRequest<Void>(Request.Method.POST, url, params.toString(),
                 Void.class, new Response.Listener<Void>() {
             @Override
             public void onResponse(Void response) {
