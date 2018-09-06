@@ -82,6 +82,7 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
                     }
                 })
                 .create();
+        dialog.setCancelable(false);
         dialog.show();
     }
 

@@ -91,6 +91,7 @@ public class ServerProtocol {
                     }
                 }
                 onError.onServerProtocolError(ErrorInfo.ERROR_NETWORK, null);
+                onError.onServerProtocolError(ErrorInfo.ERROR_NETWORK, ErrorInfo.getErrorMessage(ErrorInfo.ERROR_NETWORK));
             }
         });
         VolleySingleton.getInstance(context).addToRequestQueue(request);
