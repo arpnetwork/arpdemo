@@ -17,6 +17,8 @@
 package org.arpnetwork.arpdemo.protocol;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -64,8 +66,12 @@ public class ServerProtocol {
             final OnReceiveDeviceInfo onReceiveDeviceInfo, final OnServerProtocolError onError) {
         String url = HOST + "/device/request";
         JSONObject params = new JSONObject();
+        int width = getWidthNoVirtualBar(context);
+        int height = getHeightNoVirtualBar(context);
         try {
             params.put("package", packageName);
+            params.put("width", width);
+            params.put("height", height);
         } catch (JSONException ignore) {
         }
         GsonRequest request = new GsonRequest<DeviceInfoResponse>(Request.Method.POST, url, params.toString(),
@@ -90,7 +96,6 @@ public class ServerProtocol {
                     } catch (Exception e) {
                     }
                 }
-                onError.onServerProtocolError(ErrorInfo.ERROR_NETWORK, null);
                 onError.onServerProtocolError(ErrorInfo.ERROR_NETWORK, ErrorInfo.getErrorMessage(ErrorInfo.ERROR_NETWORK));
             }
         });
@@ -123,5 +128,19 @@ public class ServerProtocol {
             }
         });
         VolleySingleton.getInstance(context).addToRequestQueue(request);
+    }
+
+    private static int getHeightNoVirtualBar(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+        return dm.heightPixels;
+    }
+
+    private static int getWidthNoVirtualBar(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+        return dm.widthPixels;
     }
 }
