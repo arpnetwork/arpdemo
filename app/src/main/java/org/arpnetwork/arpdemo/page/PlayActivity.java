@@ -55,9 +55,17 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
 
     @Override
     public void onBackPressed() {
-        mH264RawView.stop();
-        setDisconnectedState();
-        super.onBackPressed();
+        AlertDialog dialog = new AlertDialog.Builder(this).setMessage("确定退出？")
+                .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        endPlaying();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .create();
+        dialog.setCancelable(true);
+        dialog.show();
     }
 
     @Override
@@ -84,6 +92,12 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
                 .create();
         dialog.setCancelable(false);
         dialog.show();
+    }
+
+    private void endPlaying() {
+        mH264RawView.stop();
+        setDisconnectedState();
+        finish();
     }
 
     private void getData() {

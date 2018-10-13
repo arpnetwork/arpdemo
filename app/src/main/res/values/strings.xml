@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ARP DEMO</string>
     <string name="ok">OK</string>
+    <string name="cancel">CANCEL</string>
 </resources>
