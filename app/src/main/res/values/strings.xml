@@ -1,5 +1,16 @@
 <resources>
     <string name="app_name">ARP DEMO</string>
+
     <string name="ok">OK</string>
     <string name="cancel">CANCEL</string>
+
+    <string name="network_error">network error</string>
+    <string name="remote_disconnect">app terminated</string>
+    <string name="server_reject">server rejected</string>
+    <string name="remote_error">remote device error</string>
+    <string name="version_error">incompatible version</string>
+    <string name="unknown_error">unknown error</string>
+
+    <string name="no_idle_device">no idle device</string>
+    <string name="failed_launching">remote device failed launching app</string>
 </resources>

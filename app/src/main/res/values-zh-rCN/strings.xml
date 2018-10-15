@@ -1,4 +1,14 @@
 <resources>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
+
+    <string name="network_error">网络错误</string>
+    <string name="remote_disconnect">应用已退出</string>
+    <string name="server_reject">服务器异常</string>
+    <string name="remote_error">共享设备异常</string>
+    <string name="version_error">不支持该版本号</string>
+    <string name="unknown_error">未知错误</string>
+
+    <string name="no_idle_device">暂无空闲设备</string>
+    <string name="failed_launching">共享设备启动应用失败</string>
 </resources>

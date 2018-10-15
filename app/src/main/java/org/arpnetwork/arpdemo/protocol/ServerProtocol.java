@@ -24,9 +24,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
-import org.arpnetwork.arpclient.data.ErrorInfo;
 import org.arpnetwork.arpdemo.data.DeviceInfo;
 import org.arpnetwork.arpdemo.data.DeviceInfoResponse;
+import org.arpnetwork.arpdemo.data.ErrorMessage;
 import org.arpnetwork.arpdemo.volley.GsonRequest;
 import org.arpnetwork.arpdemo.volley.VolleySingleton;
 import org.json.JSONException;
@@ -62,7 +62,7 @@ public class ServerProtocol {
      * @param onReceiveDeviceInfo callback with userInfo
      * @param onError             callback with error
      */
-    public static void getDeviceInfo(Context context, String packageName,
+    public static void getDeviceInfo(final Context context, String packageName,
             final OnReceiveDeviceInfo onReceiveDeviceInfo, final OnServerProtocolError onError) {
         String url = HOST + "/device/request";
         JSONObject params = new JSONObject();
@@ -81,7 +81,7 @@ public class ServerProtocol {
                 if (response.code == 0) {
                     onReceiveDeviceInfo.onReceiveDeviceInfo(response.data);
                 } else {
-                    onError.onServerProtocolError(response.code, response.message);
+                    onError.onServerProtocolError(response.code, ErrorMessage.getDemoErrorMessage(context, response.code));
                 }
             }
         }, new Response.ErrorListener() {
@@ -96,7 +96,7 @@ public class ServerProtocol {
                     } catch (Exception e) {
                     }
                 }
-                onError.onServerProtocolError(ErrorInfo.ERROR_NETWORK, ErrorInfo.getErrorMessage(ErrorInfo.ERROR_NETWORK));
+                onError.onServerProtocolError(ErrorMessage.NETWORK_ERROR, ErrorMessage.getSDKErrorMessage(context, ErrorMessage.NETWORK_ERROR));
             }
         });
         VolleySingleton.getInstance(context).addToRequestQueue(request);

@@ -23,6 +23,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
@@ -32,8 +33,10 @@ import org.arpnetwork.arpdemo.R;
 import org.arpnetwork.arpdemo.data.DeviceInfo;
 import org.arpnetwork.arpdemo.page.view.H264RawView;
 import org.arpnetwork.arpdemo.protocol.ServerProtocol;
+import org.arpnetwork.arpdemo.data.ErrorMessage;
 
 public class PlayActivity extends Activity implements H264RawView.OnRenderListener {
+    private static final String TAG = PlayActivity.class.getSimpleName();
     private static final int UPDATE_STATE_INTERVAL = 10000;
 
     private H264RawView mH264RawView;
@@ -82,7 +85,9 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
     @Override
     public void onError(int errorCode, String msg) {
         setDisconnectedState();
-        AlertDialog dialog = new AlertDialog.Builder(this).setMessage(msg)
+        Log.e(TAG, "onError: errorCode:" + errorCode + ", message:" + (msg == null ? "null" : msg));
+        String showMsg = ErrorMessage.getSDKErrorMessage(this, errorCode);
+        AlertDialog dialog = new AlertDialog.Builder(this).setMessage(showMsg)
                 .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
