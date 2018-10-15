@@ -18,6 +18,7 @@ package org.arpnetwork.arpdemo.page;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +26,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
@@ -58,17 +59,7 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
 
     @Override
     public void onBackPressed() {
-        AlertDialog dialog = new AlertDialog.Builder(this).setMessage("确定退出？")
-                .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        endPlaying();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .create();
-        dialog.setCancelable(true);
-        dialog.show();
+        mH264RawView.onBackPressed();
     }
 
     @Override
@@ -119,6 +110,24 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
         mH264RawView = findViewById(R.id.video_view);
         mH264RawView.setRenderLister(this);
         addIndicatorView();
+        final Context context = this;
+        findViewById(R.id.btn_exit).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                AlertDialog dialog = new AlertDialog.Builder(context).setMessage("确定退出？")
+                        .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                endPlaying();
+                            }
+                        })
+                        .setNegativeButton(R.string.cancel, null)
+                        .create();
+                dialog.setCancelable(true);
+                dialog.show();
+            }
+        });
     }
 
     private void addIndicatorView() {
@@ -128,7 +137,7 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
         layoutParams.addRule(RelativeLayout.CENTER_IN_PARENT);
         mIndicatorView.setLayoutParams(layoutParams);
 
-        ((ViewGroup) mH264RawView.getParent()).addView(mIndicatorView);
+        ((FrameLayout) findViewById(R.id.layout)).addView(mIndicatorView);
     }
 
     private void updateConnectingState() {

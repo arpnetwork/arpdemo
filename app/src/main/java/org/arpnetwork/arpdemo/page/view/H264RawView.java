@@ -84,6 +84,13 @@ public class H264RawView extends TextureView implements ARPClient.ARPClientListe
     }
 
     /**
+     * Pass press back key event
+     */
+    public void onBackPressed() {
+        mARPClient.onBackPressed();
+    }
+
+    /**
      * Set render listener
      *
      * @param listener
