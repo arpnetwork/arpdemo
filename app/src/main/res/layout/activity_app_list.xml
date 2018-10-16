@@ -5,9 +5,27 @@
     android:background="@color/themeYellow"
     android:orientation="vertical">
 
-    <TextView
-        style="@style/TitleLabel"
-        android:text="@string/app_name" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TitleLabel"
+            android:layout_width="wrap_content"
+            android:text="@string/app_name" />
+
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/subtitleText"
+            android:textSize="13sp"
+            android:layout_marginTop="@dimen/activity_top_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginBottom="@dimen/activity_horizontal_margin"
+            android:gravity="end|bottom" />
+    </LinearLayout>
 
     <ListView
         android:id="@+id/list_view"

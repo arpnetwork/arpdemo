@@ -18,11 +18,13 @@ package org.arpnetwork.arpdemo.page;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -49,6 +51,8 @@ public class AppListActivity extends AppCompatActivity {
     }
 
     private void initViews(final List<AppInfo> list) {
+        TextView version = findViewById(R.id.tv_version);
+        version.setText(getAppVersion(this));
         ListView listView = findViewById(R.id.list_view);
         AppListAdapter adapter = new AppListAdapter(this, list);
         listView.setAdapter(adapter);
@@ -93,5 +97,14 @@ public class AppListActivity extends AppCompatActivity {
             }
         });
         VolleySingleton.getInstance(context).addToRequestQueue(request);
+    }
+
+    private static String getAppVersion(Context context) {
+        String appVersion = "";
+        try {
+            appVersion = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+        }
+        return appVersion;
     }
 }
