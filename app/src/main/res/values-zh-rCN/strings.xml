@@ -11,4 +11,7 @@
 
     <string name="no_idle_device">暂无空闲设备</string>
     <string name="failed_launching">共享设备启动应用失败</string>
+
+    <string name="exit_app">再按一次退出程序</string>
+    <string name="exit_confirm">确定退出？</string>
 </resources>

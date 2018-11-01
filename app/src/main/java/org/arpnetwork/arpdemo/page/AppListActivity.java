@@ -42,17 +42,33 @@ import org.arpnetwork.arpdemo.volley.VolleySingleton;
 import java.util.List;
 
 public class AppListActivity extends AppCompatActivity {
+    private long mExitTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView( R.layout.activity_app_list);
+        initViews();
         getAppInfoList(this);
     }
 
-    private void initViews(final List<AppInfo> list) {
+    @Override
+    public void onBackPressed() {
+        long duration = System.currentTimeMillis() - mExitTime;
+        if (duration > 2000) {
+            Toast.makeText(this, R.string.exit_app, Toast.LENGTH_SHORT).show();
+            mExitTime = System.currentTimeMillis();
+        } else {
+            System.exit(0);
+        }
+    }
+
+    private void initViews() {
         TextView version = findViewById(R.id.tv_version);
         version.setText(getAppVersion(this));
+    }
+
+    private void setData(final List<AppInfo> list) {
         ListView listView = findViewById(R.id.list_view);
         AppListAdapter adapter = new AppListAdapter(this, list);
         listView.setAdapter(adapter);
@@ -83,17 +99,18 @@ public class AppListActivity extends AppCompatActivity {
         });
     }
 
-    private void getAppInfoList(Context context) {
+    private void getAppInfoList(final Context context) {
         String url = ServerProtocol.HOST + "/app/list";
         GsonRequest request = new GsonRequest<AppInfoResponse>(Request.Method.GET, url, null,
                 AppInfoResponse.class, new Response.Listener<AppInfoResponse>() {
             @Override
             public void onResponse(AppInfoResponse response) {
-                initViews(response.data);
+                setData(response.data);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, R.string.network_error, Toast.LENGTH_SHORT).show();
             }
         });
         VolleySingleton.getInstance(context).addToRequestQueue(request);

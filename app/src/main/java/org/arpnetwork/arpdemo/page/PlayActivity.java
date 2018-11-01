@@ -78,16 +78,12 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
         setDisconnectedState();
         Log.e(TAG, "onError: errorCode:" + errorCode + ", message:" + (msg == null ? "null" : msg));
         String showMsg = ErrorMessage.getSDKErrorMessage(this, errorCode);
-        AlertDialog dialog = new AlertDialog.Builder(this).setMessage(showMsg)
-                .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        finish();
-                    }
-                })
-                .create();
-        dialog.setCancelable(false);
-        dialog.show();
+        showAlert(showMsg, R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        }, false);
     }
 
     private void endPlaying() {
@@ -108,24 +104,18 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
 
     private void initViews() {
         mH264RawView = findViewById(R.id.video_view);
-        mH264RawView.setRenderLister(this);
+        mH264RawView.setRenderListener(this);
         addIndicatorView();
-        final Context context = this;
         findViewById(R.id.btn_exit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                AlertDialog dialog = new AlertDialog.Builder(context).setMessage("确定退出？")
-                        .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
+                showAlert(getString(R.string.exit_confirm), getString(R.string.ok), getString(R.string.cancel),
+                        new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 endPlaying();
                             }
-                        })
-                        .setNegativeButton(R.string.cancel, null)
-                        .create();
-                dialog.setCancelable(true);
-                dialog.show();
+                        }, null, true);
             }
         });
     }
@@ -155,5 +145,24 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
         mUpdateConnectingStateHandler.removeCallbacksAndMessages(null);
         ServerProtocol.setConnectionState(this, mSession, DeviceInfo.STATE_DISCONNECTED);
         mClosed = true;
+    }
+
+    private void showAlert(String title, int positiveBtnText,
+            DialogInterface.OnClickListener onClickPositive, boolean cancelable) {
+        showAlert(title, getString(positiveBtnText), null, onClickPositive, null, cancelable);
+    }
+
+    private void showAlert(String title, String positiveBtnText, String negativeBtnText,
+            DialogInterface.OnClickListener onClickPositive,
+            DialogInterface.OnClickListener onClickNegative, boolean cancelable) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(title)
+                .setPositiveButton(positiveBtnText, onClickPositive);
+        if (negativeBtnText != null) {
+            builder.setNegativeButton(negativeBtnText, onClickNegative);
+        }
+        AlertDialog dialog = builder.create();
+        dialog.setCancelable(cancelable);
+        dialog.show();
     }
 }

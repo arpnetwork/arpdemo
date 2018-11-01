@@ -27,7 +27,7 @@ import org.arpnetwork.arpclient.data.Quality;
 public class H264RawView extends TextureView implements ARPClient.ARPClientListener {
     private ARPClient mARPClient;
 
-    private OnRenderListener mRenderLister;
+    private OnRenderListener mRenderListener;
 
     public interface OnRenderListener {
         /**
@@ -95,26 +95,26 @@ public class H264RawView extends TextureView implements ARPClient.ARPClientListe
      *
      * @param listener
      */
-    public void setRenderLister(OnRenderListener listener) {
-        mRenderLister = listener;
+    public void setRenderListener(OnRenderListener listener) {
+        mRenderListener = listener;
     }
 
     @Override
     public void onPrepared() {
-        if (mRenderLister != null) {
-            mRenderLister.onPrepared();
+        if (mRenderListener != null) {
+            mRenderListener.onPrepared();
         }
     }
 
     @Override
     public void onClosed() {
-        mRenderLister.onClosed();
+        mRenderListener.onClosed();
     }
 
     @Override
     public void onError(int code, String msg) {
-        if (mRenderLister != null) {
-            mRenderLister.onError(code, msg);
+        if (mRenderListener != null) {
+            mRenderListener.onError(code, msg);
         }
     }
 }

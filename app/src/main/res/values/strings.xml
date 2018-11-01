@@ -13,4 +13,7 @@
 
     <string name="no_idle_device">no idle device</string>
     <string name="failed_launching">remote device failed launching app</string>
+
+    <string name="exit_app">press again to exit</string>
+    <string name="exit_confirm">Exit confirm</string>
 </resources>
