@@ -18,29 +18,31 @@ package org.arpnetwork.arpdemo.page;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.TextureView;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import org.arpnetwork.arpclient.ARPClient;
+import org.arpnetwork.arpclient.data.Quality;
 import org.arpnetwork.arpdemo.R;
 import org.arpnetwork.arpdemo.data.DeviceInfo;
-import org.arpnetwork.arpdemo.page.view.H264RawView;
 import org.arpnetwork.arpdemo.protocol.ServerProtocol;
 import org.arpnetwork.arpdemo.data.ErrorMessage;
 
-public class PlayActivity extends Activity implements H264RawView.OnRenderListener {
+public class PlayActivity extends Activity implements ARPClient.ARPClientListener {
     private static final String TAG = PlayActivity.class.getSimpleName();
     private static final int UPDATE_STATE_INTERVAL = 10000;
 
-    private H264RawView mH264RawView;
+    private ARPClient mARPClient;
+    private TextureView mRenderView;
     private ProgressBar mIndicatorView;
 
     private String mSession;
@@ -59,7 +61,7 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
 
     @Override
     public void onBackPressed() {
-        mH264RawView.onBackPressed();
+        mARPClient.onBackPressed();
     }
 
     @Override
@@ -87,7 +89,7 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
     }
 
     private void endPlaying() {
-        mH264RawView.stop();
+        mARPClient.stop();
         setDisconnectedState();
         finish();
     }
@@ -99,12 +101,11 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
         mSession = intent.getStringExtra("SESSION");
         String packageName = intent.getStringExtra("PACKAGE");
 
-        mH264RawView.connectRemoteDevice(host, port, mSession, packageName);
+        connectRemoteDevice(host, port, mSession, packageName);
     }
 
     private void initViews() {
-        mH264RawView = findViewById(R.id.video_view);
-        mH264RawView.setRenderListener(this);
+        mRenderView = findViewById(R.id.video_view);
         addIndicatorView();
         findViewById(R.id.btn_exit).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,6 +119,13 @@ public class PlayActivity extends Activity implements H264RawView.OnRenderListen
                         }, null, true);
             }
         });
+    }
+
+    private void connectRemoteDevice(String host, int port, String session, String packageName) {
+        mARPClient = new ARPClient(this, this);
+        ARPClient.setQuality(Quality.HIGH);
+        mARPClient.setSurfaceView(mRenderView);
+        mARPClient.start(host, port, session, packageName);
     }
 
     private void addIndicatorView() {
