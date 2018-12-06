@@ -59,6 +59,9 @@ public class ErrorMessage {
             case ErrorInfo.ERROR_NO_DEVICES:
                 return context.getString(R.string.server_reject);
 
+            case ErrorInfo.ERROR_MEDIA:
+                return context.getString(R.string.server_media);
+
             case ErrorInfo.ERROR_PROTOCOL_TOUCH_SETTING:
             case ErrorInfo.ERROR_PROTOCOL_VIDEO_INFO:
             case ErrorInfo.ERROR_CONNECTION_RESULT:
